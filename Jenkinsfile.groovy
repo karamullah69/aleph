@@ -8,11 +8,10 @@ pipeline {
         }
         stage('Build and Push Docker Images') {
             steps {
-                script {
-                    // Build and push Docker images for both Drupal apps
+                 script {
                     docker.build("your-drupal-app1-image:tag", "app1/")
                     docker.build("your-drupal-app2-image:tag", "app2/")
-                    docker.withRegistry('https://your-docker-registry', 'docker-registry-credentials') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'docker-registry-credentials') {
                         docker.image("your-drupal-app1-image:tag").push()
                         docker.image("your-drupal-app2-image:tag").push()
                     }
@@ -23,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to Kubernetes using kubectl and Kustomize
-                    sh 'kubectl apply -k kubernetes_drupal/'
+                    sh 'kubectl apply -k aleph/'
                 }
             }
         }
