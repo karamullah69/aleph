@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal-app1-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drupal-app1
+  template:
+    metadata:
+      labels:
+        app: drupal-app1
+    spec:
+      containers:
+      - name: drupal-app1
+        image: your-drupal-app1-image:tag
+        ports:
+        - containerPort: 80
+        env:
+        - name: COMMON_DATA
+          valueFrom:
+            configMapKeyRef:
+              name: common-config
+              key: common_data
